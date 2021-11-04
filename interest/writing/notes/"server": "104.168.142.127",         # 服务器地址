@@ -1,0 +1,6 @@
+"server": "104.168.142.127",         # 服务器地址
+"server_port": 1080,        # 端口
+"password": "Lx78656578Lx",             # 密码
+"method": "aes-256-cfb",        # 加密方式
+"protocol": "origin",  # 协议插件
+"obfs": "plain",       # 混淆插件

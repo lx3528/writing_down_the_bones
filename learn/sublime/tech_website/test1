@@ -1,0 +1,12 @@
+test1
+
+
+推荐系统itoi召回之swing召回
+https://blog.csdn.net/dreamfantacy/article/details/100825295
+
+
+推荐系统之---LFM的各种版本
+一种是基于邻域的方式，这种方式又包含了基于用户的和基于物品的，这种方式实现简单，而且效果也是非常的不错，唯一的缺点是对待稀疏矩阵的时候表现乏力。因此诞生了下面的方式。
+方式二是基于模型的方式，也就是矩阵分解的方式，这种方式将推荐问题转化为了机器学习问题。
+https://blog.csdn.net/weixin_41843918/article/details/90216729
+
