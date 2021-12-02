@@ -1,0 +1,21 @@
+1115
+
+
+1anaconda安装记得改前缀
+2conda
+conda create -n my-py-env python=3.6.3
+source activate env
+source deactivate
+
+conda remove -n  --all
+
+看懂浅梦的youtubednn：
+youtube DNN视频topN推荐算法原理及代码
+https://blog.csdn.net/u013714645/article/details/97899342
+
+Deep Neural Network for YouTube Recommendation论文精读
+
+看Youtube怎么利用深度学习做推荐
+https://zhuanlan.zhihu.com/p/46247835
+
+

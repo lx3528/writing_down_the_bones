@@ -1,0 +1,23 @@
+1116
+
+Sampled Softmax 推导，没看懂：
+https://blog.csdn.net/csdnqixiaoxin/article/details/84350814
+
+Sampled Softmax 腾讯：
+https://cloud.tencent.com/developer/article/1012526
+
+odd是什么
+机器学习之Logistic算法原理详解https://blog.csdn.net/u013230189/article/details/82683190
+
+odds=几率是将事件发生概率和事件不发生概率相除计算而得
+
+
+Deep Neural Network for YouTube Recommendation论文精读--随想
+https://zhuanlan.zhihu.com/p/25343518
+
+看Youtube怎么利用深度学习做推荐--石塔西
+https://zhuanlan.zhihu.com/p/46247835
+
+推荐系统之YoutubeDNN代码详解
+---多个链接https://blog.csdn.net/weixin_35154281/article/details/112493756
+
