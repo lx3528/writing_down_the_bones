@@ -1,0 +1,12 @@
+1.txt
+
+
+1了解决策树
+
+
+2了解gbdt：
+每次计算上一次的残差（adaboost加法模型+指数损失函数）
+
+gb：梯度下降
+3机器学习算法中 GBDT 和 XGBOOST 的区别有哪些？
+https://www.zhihu.com/question/41354392

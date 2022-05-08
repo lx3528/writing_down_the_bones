@@ -82,3 +82,8 @@ DeepFM：《DeepFM: A Factorization-Machine based Neural Network for CTR
 
 
 我就是cv转过来的，建议先从基本流程着手：数据产出-特征工程-召回-模型训练-排序调优-线上serving等，整体流程要有个概念，自己负责的模块则需要精通
+
+![image-20220227224334446](/Users/lixiang/Documents/typora/learn/0920learn/study_temp.assets/image-20220227224334446.png)
+
+
+

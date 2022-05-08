@@ -1,0 +1,141 @@
+genSwingData4ShortVideo
+
+
+
+genSwingResult4ShortVideo
+
+输入： 和item的index
+每个item取top 100的效果，不用找活，多去想
+输出hdfs
+swingResult4Windows
+上面那个路径的相似度，取10天的
+val log = 1.0 / Math.log(diff+0.1) * sim 作为新的sim ---存到redis，有效期7天！
+
+#2之前的流程：
+genSwingCocData
+得到曝光数据： imei itemid) (play_time video_time alg_scene)参数时间
+大于7s的过滤： play_rate >= 0.7 && play_rate <= 100.0) || play_time>=7.
+结果： //imei, itemid
+统计每个item总共被点击的数量
+
+对item:userList 进行聚合：得到//(user1,user2,item)
+对joinList进行遍历：i,j=Math.pow(u1List, -0.2)*Math.pow(u2List, -0.2)/(1.0+joinList.size)
+i,j score = s*jscore
+
+
+genSwingIncrementResult
+1.0/(1+Math.log(1+interval))
+取5天的，头部100
+
+#3
+genCoactionData 用于产出给wilson的cfdata！
+根据设定时间窗口内的数据源计算itemPair的曝光count和播放count，存到相应的imp和play路径中
+
+数据处理和第一个的处理一样！
+共线率要求，大于2
+一天前和今天的合并：
+ beforeCount*0.6 + currentCount*1.0
+ 太小的删除了：filter( x => x._3 > 0.006)（用aggregateByKey 然后join）
+
+ calWilson
+ 共线率，没要求
+ 首先根据最近10天的数据计算(imei itemid) (play_time video_time alg_scene)
+ val condCtr = 1.0 * condPlyCnt / condImpCnt
+val noCondCtr = 1.0 * noCondPlyCnt / noCondImpCnt
+ lift = condCtr / noCondCtr
+ //itemid,simid,condCtr,condPlyCnt,condImpCnt,srcPlyCnt,srcImpCnt,simPlyCnt,simImpCnt,noCondCtr,lift
+ val noCondPly = simPly - condPly
+       val noCondImp = simImp - condImp
+       val ctr = WilsonScore4Long.confidenceV2(condPly, condImp-condPly)
+       val noCondCtr = WilsonScore4Long.confidenceV2(noCondPly, noCondImp-noCondPly)
+       val lift = ctr/noCondCtr
+       if(lift < liftThres（1.0）)  None
+       没有排序
+
+ calWilsonrate效果不好！
+
+ 周三去公看的，176 177的特点！！
+325 样本流：
+
+
+三个文件
+
+SampleParserMain（每小时一次
+1 读落得sequenceFile 用户样本，根据pb解析action，然后根据user和item，调用fs，获得用户特征的hash 和item特征的hash（住：fs在gr的时候得到用户和request的信息）
+2 拼lineid {imei}_{req_id}_{playTime}_{videoTime}_{itemId
+3拼label：
+正则playrate时长越小，除数越大， playrate，log playTime，根据互动加权的log playTime。playTime。二分类的label
+0
+if(medRec.videoTime > 0 && medRec.videoTime < 10){
+            pr = Math.min(2.4, medRec.playRate)/2.4
+        }else if(medRec.videoTime >= 10 && medRec.videoTime < 20){
+            pr = Math.min(2.0, medRec.playRate)/2.0
+        }else if(medRec.videoTime >= 20 && medRec.videoTime < 30){
+            pr = Math.min(1.4, medRec.playRate)/1.4
+        }else if(medRec.videoTime >= 30 && medRec.videoTime < 40){
+            pr = Math.min(1.1, medRec.playRate)/1.1
+        }else{
+            pr = Math.min(1.0, medRec.playRate)/1.0
+        }
+1：medRec.playRate
+2：pr = Math.min(1.0, medRec.playRate)
+3 logTime=Math.log(1.0+Math.min(Math.max(ptime, 0.0), 150.0)）
+4 follow share like logTime+1 dislike =0 且小于5
+5：playTime
+6二分类：小于20的pt》5 大于20的，pt》7 或有互动有follow
+4：拼特征（uhash）{group_id}\002{raw_feature}\002{parsed_feature}\002{hash}
+
+——————————————————————————————————————————————————
+predictDataWithCopyRight
+将全量正排中item都生成待预测样本，并且经过了版权过滤
+取天级全量和小时级更新的item！--过作者处理--
+-品特整c++处理--拼特征
+-avgRate, fullRate, expo) 三个作为item特征加了进去，swing数据是多个303特征，wilson数据也加进去了，然后得到结果
+
+
+
+---RandomNegativeV4
+如果最近一个小是没有，这次运行的是2-3小时前的
+1 得到每个item的 7天的播放时长
+2 得到每个item的 7天的平均播放率,完播的次数,展示的次数 ---真实曝光
+3 根据上面0的label 和 这个来判断label
+if((normal_rate >= 0.8 && !scene.contains("1300"))
+          || (normal_rate >= 0.85 && scene.contains("1300"))
+          || (normal_rate >= 0.5 && itemAvgTimeValue > 0.0 && playTime/itemAvgTimeValue > 1.0))
+
+负采样，候选，用户play的视频的用户，
+batch内7（batch就是所有用户的点击减去正样本的item）+item（负采样是从S作者中选的）选50w的5个
+拼到lineId中
+真实正样本以及播放时长小于5s的真实负样本---因为真实负样本的特殊性，新做了label！
+
+在后，再次在item特征上拼了--把avgRate, fullRate, expo的特征混进去
+
+然后，训练，在caas上训练，分布式跑
+
+模型，很倦 ---512 128 32
+
+上面是训练数据---的制作
+线上数据，估计宙斯提供，离线item样本，自己写到faiss上！
+
+
+
+
+我的工作：
+冷启动相关的，推全的都可以讲！
+nlp
+年终的ppt上：
+pid策略：rerank读取分数，分数实时计算，但间接影响数据
+优选
+非代码：
+实验相关：item隔离实验
+指标相关：
+
+热度预估，优选，二级保量！
+
+
+319 tag2匹配召回介绍：
+item相似召回
+item2user召回
+
+
+别人的工作：
