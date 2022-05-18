@@ -1,0 +1,13 @@
+2、通过命令行安装搜狗输入法
+sudo dpkg -i sogoupinyin_版本号_amd64.deb
+注：
+如果安装过程中提示缺少相关依赖，则执行如下命令解决：
+sudo apt -f install
+3、注销计算机即可正常使用搜狗输入法
+
+新装Linux后的几个要做的事2019-08-08
+https://www.jianshu.com/p/9989bf1a1f1c
+
+有的google瞎子有问题，这个可以！
+https://blog.csdn.net/xiaowenshen/article/details/118757602
+
