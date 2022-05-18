@@ -1,0 +1,13 @@
+expect -f run2.sh
+#!/usr/bin/expect -f
+#https://blog.csdn.net/dongqing27/article/details/83108877
+#https://www.jianshu.com/p/c229d64fd207
+
+set timeout 3
+spawn ssh lx@192.168.43.64 
+
+
+#expect "*yes/no*" {send "yes\n"}
+
+expect "password:" {send "1111\r"} #xxx：登陆密码
+interact
