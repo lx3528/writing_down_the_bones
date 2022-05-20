@@ -16,3 +16,11 @@ Plug 'ddollar/nerdcommenter'
 Plug 'iamcco/markdown-preview.vim'
 
 call plug#end()
+
+
+
+hanghao
+vim ~/.vimrc
+:set nu
+syntax on
+. ~/.vimrc
